@@ -16,3 +16,25 @@ Please create an index method that returns:
 2. incomplete_tasks_count: Total count of tasks that are NOT in the 'DONE' category.
 3. upcoming_tasks: A list of the top 5 tasks that are closest to their due_date but not yet 'DONE'.
 Use Eloquent relationships and return as JSON.
+
+I need to create a Pinia store for authentication in Vue 3 with TypeScript. It should have states for user (User object or null) and token (string or null). Create an isAuthenticated getter.
+Create a login action that calls the backend login API using axios, saves the token to localStorage and state, and fetches the user data.
+4. Create a logout action that calls the logout API, clears the token from localStorage, and resets the state.
+
+I need to implement a navigation guard in my Vue Router.
+If a route requires authentication (like Dashboard or Project) and the user is not logged in (check Pinia auth store), redirect them to the /login page.
+Also, prevent logged-in users from accessing the /login page.
+
+Generate a simple login page. Requirement: Field email dan password, tombol login, dan tampilan pesan error yang deskriptif dari API (misal: "Email or password is wrong"). Use all english.
+
+Please make it so the first time user open the application, it will be shown the login page
+
+now please make the login page doesnt have vue thing in it, just a regular login page with these colors:
+#333333 (main color background)
+#cf73a4 (initial color)
+#ffffff (secondary color)
+this will be the color theme for this whole system
+
+please create a dashboard with a sidebar that has logout button, for now make it empty, but it will be the landing page after user log in
+
+make the login page with a little bit description on the top, a text logo (TaskTracker). all with the color theme i provided
