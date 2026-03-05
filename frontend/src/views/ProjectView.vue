@@ -38,7 +38,7 @@ const form = ref({
 
 const hasProjects = computed(() => projects.value.length > 0)
 
-const formTitle = computed(() => (formMode.value === 'create' ? 'Tambah Project' : 'Edit Project'))
+const formTitle = computed(() => (formMode.value === 'create' ? 'Create Project' : 'Edit Project'))
 
 const submitLabel = computed(() => (formMode.value === 'create' ? 'Create Project' : 'Update Project'))
 
@@ -185,7 +185,7 @@ watch(search, () => {
             <input
               v-model="search"
               type="text"
-              placeholder="Cari nama project..."
+              placeholder="Search project name..."
               class="w-full rounded-lg border border-white/20 bg-white px-3 py-2 text-sm text-[#333333] outline-none"
             />
             <button
@@ -201,7 +201,7 @@ watch(search, () => {
             class="rounded-lg border border-white/20 bg-white px-3 py-2 text-sm text-[#333333] outline-none"
             @change="fetchProjects"
           >
-            <option value="">Semua Jenis</option>
+            <option value="">All Statuses</option>
             <option value="active">Active</option>
             <option value="archived">Archived</option>
           </select>
@@ -218,7 +218,7 @@ watch(search, () => {
             class="rounded-lg bg-[#cf73a4] px-4 py-2 text-sm font-semibold text-white"
             @click="openCreateModal"
           >
-            + Tambah Project
+            + Add Project
           </button>
         </div>
       </div>
@@ -230,12 +230,12 @@ watch(search, () => {
         <table class="min-w-full text-left text-sm text-[#333333]">
           <thead class="bg-[#f3f3f3] text-xs uppercase tracking-wide text-[#555555]">
             <tr>
-              <th class="px-4 py-3">Nama</th>
-              <th class="px-4 py-3">Deskripsi</th>
+              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Description</th>
               <th class="px-4 py-3">Status</th>
               <th class="px-4 py-3">Total Task</th>
-              <th class="px-4 py-3">Tanggal Dibuat</th>
-              <th class="px-4 py-3">Aksi</th>
+              <th class="px-4 py-3">Created Date</th>
+              <th class="px-4 py-3">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -267,7 +267,7 @@ watch(search, () => {
                     class="rounded-lg border border-[#cf73a4] px-3 py-1.5 text-xs font-semibold text-[#cf73a4]"
                     @click="goToDetail(project.id)"
                   >
-                    Detail
+                    Details
                   </button>
 
                   <button
@@ -284,7 +284,7 @@ watch(search, () => {
                     :disabled="isSubmitting === project.id"
                     @click="toggleStatus(project)"
                   >
-                    {{ project.status === 'active' ? 'Hapus' : 'Aktifkan' }}
+                    {{ project.status === 'active' ? 'Archive' : 'Activate' }}
                   </button>
                 </div>
               </td>
@@ -304,7 +304,7 @@ watch(search, () => {
             <input
               v-model="form.name"
               type="text"
-              placeholder="Nama project"
+              placeholder="Project name"
               class="rounded-lg border border-[#dddddd] px-3 py-2 text-sm outline-none"
             />
 
@@ -319,7 +319,7 @@ watch(search, () => {
             <textarea
               v-model="form.description"
               rows="3"
-              placeholder="Deskripsi project"
+              placeholder="Project description"
               class="rounded-lg border border-[#dddddd] px-3 py-2 text-sm outline-none md:col-span-2"
             />
 

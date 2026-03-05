@@ -321,7 +321,7 @@ const submitEditProject = async () => {
 }
 
 const deleteTask = async (task: ProjectTask) => {
-  const confirmed = window.confirm(`Hapus task \"${task.title}\"?`)
+  const confirmed = window.confirm(`Delete task \"${task.title}\"?`)
   if (!confirmed) {
     return
   }
@@ -463,7 +463,7 @@ onMounted(async () => {
 
           <div class="mt-4 flex flex-wrap gap-8 text-xs font-semibold uppercase tracking-wide text-[#6b7280]">
             <div>
-              <p>Dibuat</p>
+              <p>Created</p>
               <p class="mt-1 text-sm font-bold text-[#111827]">
                 {{ project.created_at ? formatDate(project.created_at) : '-' }}
               </p>
@@ -473,7 +473,7 @@ onMounted(async () => {
               <p class="mt-1 text-sm font-bold text-[#111827]">{{ totalTasks }}</p>
             </div>
             <div>
-              <p>Selesai</p>
+              <p>Completed</p>
               <p class="mt-1 text-sm font-bold text-emerald-700">{{ doneSummary }}</p>
             </div>
           </div>
@@ -488,7 +488,7 @@ onMounted(async () => {
                 class="rounded-lg bg-[#cf73a4] px-4 py-2 text-sm font-semibold text-white"
                 @click="openCreateTaskModal"
               >
-                Tambah Task
+                Add Task
               </button>
           </div>
         </div>
@@ -544,7 +544,7 @@ onMounted(async () => {
                       :disabled="deletingTaskId === task.id"
                       @click="deleteTask(task)"
                     >
-                      Hapus
+                      Delete
                     </button>
                   </div>
                 </article>
@@ -567,7 +567,7 @@ onMounted(async () => {
       class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4"
     >
       <div class="w-full max-w-lg rounded-xl bg-white p-5 text-[#333333] shadow-xl">
-        <h3 class="text-lg font-bold text-[#cf73a4]">Tambah Task</h3>
+        <h3 class="text-lg font-bold text-[#cf73a4]">Create Task</h3>
 
         <form class="mt-4 space-y-3" @submit.prevent="submitCreateTask">
           <input

@@ -249,7 +249,7 @@ onMounted(async () => {
             class="rounded-lg border border-white/20 bg-white px-3 py-2 text-sm text-[#333333] outline-none"
             @change="fetchTasks"
           >
-            <option value="">Semua Category</option>
+            <option value="">All Categories</option>
             <option v-for="category in categories" :key="category.id" :value="category.id">
               {{ category.name }}
             </option>
@@ -267,7 +267,7 @@ onMounted(async () => {
             class="rounded-lg bg-[#cf73a4] px-4 py-2 text-sm font-semibold text-white"
             @click="openCreateTaskModal"
           >
-            + Tambah Task
+            + Add Task
           </button>
         </div>
       </div>
@@ -311,7 +311,7 @@ onMounted(async () => {
                     :disabled="isDeletingId === task.id"
                     @click="openTaskDetailModal(task)"
                   >
-                    Detail
+                    Details
                   </button>
 
                   <button

@@ -86,6 +86,36 @@ Dokumen/hasil yang wajib dan dihasilkan:
 - `README.md` di root project (instalasi, menjalankan aplikasi, testing).
 - `AI_USAGE.md` di root project (prompt, MCP/context, tools).
 
+## UI Improvements Log
+
+Ringkasan perbaikan UI yang telah dilakukan secara iteratif:
+
+- Spacing & Layout
+   - Penyesuaian jarak antar card/kotak pada Dashboard, Project, Task, dan Project Detail.
+   - Implementasi jarak minimum berbasis mm untuk konsistensi visual antar section.
+   - Peningkatan pemisahan visual dengan border/shadow halus pada container utama.
+
+- Dashboard
+   - Perbaikan tampilan chart distribusi task dengan palet warna lebih soft/pastel.
+   - Penyesuaian spacing vertikal antar blok agar tidak terlihat berdempetan.
+
+- Sidebar
+   - Refactor sidebar menjadi komponen terpisah `Sidebar.vue`.
+   - Penyempurnaan interaksi hover/active menu (tanpa keluar dari tema warna utama).
+   - Penempatan branding `adoravelc` di area bawah sidebar, termasuk link sosial.
+   - Iterasi lanjutan untuk merapatkan jarak logout-logo-link agar terasa sebagai satu grup.
+
+- Login Page
+   - Penambahan branding `adoravelc` logo (versi dark) dan footer attribution/link sosial.
+   - Re-order elemen footer sesuai kebutuhan user.
+   - Penambahan hint input (`example@energeek.id`, `******`).
+   - Penambahan fitur show/hide password dengan ikon mata klasik di dalam kolom password.
+   - Fine-tuning spacing tombol login, logo, dan area bawah card.
+
+- Language/Copy Consistency
+   - Standardisasi teks UI ke bahasa Inggris pada halaman utama (Dashboard/Project/Task/Project Detail).
+   - Peningkatan kejelasan notifikasi error dari API (menghindari pesan generik seperti Error 500).
+
 ## Notes
 
 - Perubahan dilakukan iteratif berdasarkan feedback user sampai memenuhi kebutuhan backend, frontend, UI spacing, seeding, dan dokumentasi.
