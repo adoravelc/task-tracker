@@ -105,6 +105,19 @@ cd frontend
 npm run test:unit
 ```
 
+## Dokumentasi API
+
+Dokumentasi API disediakan dalam format **Postman Collection** (bisa di-import ke Postman dan kompatibel untuk dipakai di tools API client lain melalui import JSON):
+
+- Collection: `docs/postman/ProjectTracker.postman_collection.json`
+- Environment: `docs/postman/ProjectTracker.postman_environment.json`
+
+Langkah cepat:
+
+1. Import kedua file tersebut ke Postman.
+2. Jalankan request **Auth > Login** untuk mengisi variabel `token` otomatis.
+3. Gunakan endpoint lain (Projects, Tasks, Dashboard, Categories) dengan Bearer token dari variabel environment.
+
 ## Build Production (Opsional)
 
 ### Frontend
