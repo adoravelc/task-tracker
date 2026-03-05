@@ -1,0 +1,18 @@
+TOOL: GitHub Copilot
+I need to create Authentication APIs in my AuthController for a Laravel 12 project using Laravel Sanctum.Please generate the following:A login method: It should validate an incoming request containing 'email' (required, email format) and 'password' (required). Use Auth::attempt to verify. If successful, generate a Sanctum Personal Access Token (PAT) and return a JSON response with the token and user data. If it fails, return a 401 error with a descriptive message. There is NO register feature.
+2. A logout method: It should revoke the user's current token using $request->user()->currentAccessToken()->delete() and return a success JSON response.Give me the exact code to put in routes/api.php to register these two endpoints. The logout route MUST be protected by the auth:sanctum middleware.
+
+I need you to complete the ProjectController for a Laravel 12 API.Requirements:index: Return a list of projects. It must support searching by the project name.store: Validate and create a project (name, description, status). The created_by field MUST be automatically filled with the currently authenticated user's ID.show: Return a single project along with its tasks.
+4. update: Validate and update project details (including changing status to 'active' or 'archived').
+Note: There is NO destroy method. Return all responses in a clean JSON format.
+
+I need you to complete the TaskController for a Laravel 12 API.Requirements:index: Return a list of tasks. Support searching by title  and filtering by project_id.store: Validate and create a task (project_id, category_id, title, description, due_date). Set created_by to the authenticated user's ID.
+3. show and update: Standard API methods for a single task.
+4. destroy: This MUST use soft deletes. Before deleting the task, you MUST update the deleted_by column with the authenticated user's ID, save it, and then call delete().
+
+I need to complete DashboardController for a Laravel 12 API.
+Please create an index method that returns:
+1. active_projects_count: Total count of projects where status is 'active'.
+2. incomplete_tasks_count: Total count of tasks that are NOT in the 'DONE' category.
+3. upcoming_tasks: A list of the top 5 tasks that are closest to their due_date but not yet 'DONE'.
+Use Eloquent relationships and return as JSON.
