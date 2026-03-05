@@ -10,11 +10,21 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->query('search', ''));
+        $status = trim((string) $request->query('status', ''));
+        $deadline = trim((string) $request->query('deadline', ''));
 
         $projects = Project::query()
             ->withCount('tasks')
             ->when($search !== '', function ($query) use ($search) {
                 $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+            })
+            ->when(in_array($status, ['active', 'archived'], true), function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->when($deadline !== '', function ($query) use ($deadline) {
+                $query->whereHas('tasks', function ($taskQuery) use ($deadline) {
+                    $taskQuery->whereDate('due_date', '<=', $deadline);
+                });
             })
             ->latest()
             ->get();

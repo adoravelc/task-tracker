@@ -10,6 +10,8 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->query('search', ''));
+        $deadline = trim((string) $request->query('deadline', ''));
+        $categoryId = (int) $request->query('category_id', 0);
 
         $tasks = Task::query()
             ->with(['project:id,name', 'category:id,name'])
@@ -18,6 +20,12 @@ class TaskController extends Controller
             })
             ->when($request->filled('project_id'), function ($query) use ($request) {
                 $query->where('project_id', $request->query('project_id'));
+            })
+            ->when($categoryId > 0, function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            })
+            ->when($deadline !== '', function ($query) use ($deadline) {
+                $query->whereDate('due_date', '<=', $deadline);
             })
             ->latest()
             ->get();

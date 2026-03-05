@@ -27,6 +27,8 @@ const tasks = ref<TaskItem[]>([])
 const projects = ref<SimpleProject[]>([])
 const categories = ref<SimpleCategory[]>([])
 const search = ref('')
+const selectedCategoryId = ref('')
+const selectedDeadline = ref('')
 const isLoading = ref(false)
 const isSavingForm = ref(false)
 const isDeletingId = ref<number | null>(null)
@@ -90,6 +92,8 @@ const fetchTasks = async () => {
     const response = await api.get<{ data: TaskItem[] }>('/tasks', {
       params: {
         search: search.value.trim() || undefined,
+        category_id: selectedCategoryId.value || undefined,
+        deadline: selectedDeadline.value || undefined,
       },
     })
 
@@ -203,13 +207,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="min-h-[calc(100vh-3rem)] bg-[#333333] p-6 text-white">
-    <div class="mx-auto max-w-6xl">
-      <div class="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+  <section class="min-h-[calc(100vh-3rem)] bg-[#333333] p-8 text-white">
+    <div class="mx-auto flex max-w-7xl flex-col" style="row-gap: 6mm;">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <h1 class="text-2xl font-bold text-[#cf73a4]">Task</h1>
 
-        <div class="flex w-full flex-col gap-2 md:w-auto md:flex-row">
-          <form class="flex w-full max-w-md gap-2" @submit.prevent="fetchTasks">
+        <div class="flex w-full flex-col gap-x-[3mm] gap-y-[6mm] md:w-auto md:flex-row">
+          <form class="flex w-full max-w-md gap-x-[3mm] gap-y-[6mm]" @submit.prevent="fetchTasks">
             <input
               v-model="search"
               type="text"
@@ -224,6 +228,24 @@ onMounted(async () => {
             </button>
           </form>
 
+          <select
+            v-model="selectedCategoryId"
+            class="rounded-lg border border-white/20 bg-white px-3 py-2 text-sm text-[#333333] outline-none"
+            @change="fetchTasks"
+          >
+            <option value="">Semua Category</option>
+            <option v-for="category in categories" :key="category.id" :value="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+
+          <input
+            v-model="selectedDeadline"
+            type="date"
+            class="rounded-lg border border-white/20 bg-white px-3 py-2 text-sm text-[#333333] outline-none"
+            @change="fetchTasks"
+          />
+
           <button
             type="button"
             class="rounded-lg bg-[#cf73a4] px-4 py-2 text-sm font-semibold text-white"
@@ -234,10 +256,10 @@ onMounted(async () => {
         </div>
       </div>
 
-      <p v-if="errorMessage" class="mb-4 rounded-lg bg-white/10 px-4 py-2 text-sm">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="rounded-lg bg-white/10 px-4 py-2 text-sm">{{ errorMessage }}</p>
       <p v-if="isLoading" class="text-sm text-white/80">Loading tasks...</p>
 
-      <div v-else class="overflow-hidden rounded-xl bg-white shadow">
+      <div v-else class="overflow-hidden rounded-xl border border-white/10 bg-white shadow-lg">
         <table class="min-w-full text-left text-sm text-[#333333]">
           <thead class="bg-[#f3f3f3] text-xs uppercase tracking-wide text-[#555555]">
             <tr>
@@ -259,7 +281,7 @@ onMounted(async () => {
               <td class="px-4 py-3">{{ task.category?.name ?? '-' }}</td>
               <td class="px-4 py-3">{{ formatDate(task.due_date) }}</td>
               <td class="px-4 py-3">
-                <div class="flex gap-2">
+                <div class="flex flex-wrap gap-x-[3mm] gap-y-[6mm]">
                   <button
                     type="button"
                     class="rounded-lg border border-[#cf73a4] px-3 py-1.5 text-xs font-semibold text-[#cf73a4] disabled:opacity-60"

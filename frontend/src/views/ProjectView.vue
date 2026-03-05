@@ -18,6 +18,8 @@ const router = useRouter()
 
 const projects = ref<Project[]>([])
 const search = ref('')
+const selectedStatus = ref('')
+const selectedDeadline = ref('')
 const isLoading = ref(false)
 const isSubmitting = ref<number | null>(null)
 const isSavingForm = ref(false)
@@ -66,6 +68,8 @@ const fetchProjects = async () => {
     const response = await api.get<{ data: Project[] }>('/projects', {
       params: {
         search: search.value.trim() || undefined,
+        status: selectedStatus.value || undefined,
+        deadline: selectedDeadline.value || undefined,
       },
     })
 
@@ -76,6 +80,7 @@ const fetchProjects = async () => {
     isLoading.value = false
   }
 }
+
 
 const toggleStatus = async (project: Project) => {
   const nextStatus: ProjectStatus = project.status === 'active' ? 'archived' : 'active'
@@ -153,7 +158,9 @@ const formatDate = (value: string) => {
   })
 }
 
-onMounted(fetchProjects)
+onMounted(async () => {
+  await fetchProjects()
+})
 
 watch(search, () => {
   if (searchDebounceTimer) {
@@ -167,13 +174,13 @@ watch(search, () => {
 </script>
 
 <template>
-  <section class="min-h-[calc(100vh-3rem)] bg-[#333333] p-6 text-white">
-    <div class="mx-auto max-w-6xl">
-      <div class="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+  <section class="min-h-[calc(100vh-3rem)] bg-[#333333] p-8 text-white">
+    <div class="mx-auto flex max-w-7xl flex-col" style="row-gap: 6mm;">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <h1 class="text-2xl font-bold text-[#cf73a4]">Project</h1>
 
-        <div class="flex w-full flex-col gap-2 md:w-auto md:flex-row">
-          <form class="flex w-full max-w-md gap-2" @submit.prevent="fetchProjects">
+        <div class="flex w-full flex-col gap-x-[3mm] gap-y-[6mm] md:w-auto md:flex-row">
+          <form class="flex w-full max-w-md gap-x-[3mm] gap-y-[6mm]" @submit.prevent="fetchProjects">
             <input
               v-model="search"
               type="text"
@@ -188,6 +195,23 @@ watch(search, () => {
             </button>
           </form>
 
+          <select
+            v-model="selectedStatus"
+            class="rounded-lg border border-white/20 bg-white px-3 py-2 text-sm text-[#333333] outline-none"
+            @change="fetchProjects"
+          >
+            <option value="">Semua Jenis</option>
+            <option value="active">Active</option>
+            <option value="archived">Archived</option>
+          </select>
+
+          <input
+            v-model="selectedDeadline"
+            type="date"
+            class="rounded-lg border border-white/20 bg-white px-3 py-2 text-sm text-[#333333] outline-none"
+            @change="fetchProjects"
+          />
+
           <button
             type="button"
             class="rounded-lg bg-[#cf73a4] px-4 py-2 text-sm font-semibold text-white"
@@ -198,10 +222,10 @@ watch(search, () => {
         </div>
       </div>
 
-      <p v-if="errorMessage" class="mb-4 rounded-lg bg-white/10 px-4 py-2 text-sm">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="rounded-lg bg-white/10 px-4 py-2 text-sm">{{ errorMessage }}</p>
       <p v-if="isLoading" class="text-sm text-white/80">Loading projects...</p>
 
-      <div v-else class="overflow-hidden rounded-xl bg-white shadow">
+      <div v-else class="overflow-hidden rounded-xl border border-white/10 bg-white shadow-lg">
         <table class="min-w-full text-left text-sm text-[#333333]">
           <thead class="bg-[#f3f3f3] text-xs uppercase tracking-wide text-[#555555]">
             <tr>
@@ -236,7 +260,7 @@ watch(search, () => {
               <td class="px-4 py-3">{{ project.tasks_count }}</td>
               <td class="px-4 py-3">{{ formatDate(project.created_at) }}</td>
               <td class="px-4 py-3">
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-x-[3mm] gap-y-[6mm]">
                   <button
                     type="button"
                     class="rounded-lg border border-[#cf73a4] px-3 py-1.5 text-xs font-semibold text-[#cf73a4]"
