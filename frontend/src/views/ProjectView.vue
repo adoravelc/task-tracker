@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/utils/axios'
+import { getApiErrorMessage } from '@/utils/apiError'
 
 type ProjectStatus = 'active' | 'archived'
 
@@ -74,8 +75,8 @@ const fetchProjects = async () => {
     })
 
     projects.value = response.data.data
-  } catch {
-    errorMessage.value = 'Failed to load projects.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to load projects.')
   } finally {
     isLoading.value = false
   }
@@ -94,8 +95,8 @@ const toggleStatus = async (project: Project) => {
     })
 
     project.status = nextStatus
-  } catch {
-    errorMessage.value = 'Failed to update project status.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to update project status.')
   } finally {
     isSubmitting.value = null
   }
@@ -128,8 +129,8 @@ const submitProject = async () => {
     resetForm()
     closeFormModal()
     await fetchProjects()
-  } catch {
-    errorMessage.value = 'Failed to save project.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to save project.')
   } finally {
     isSavingForm.value = false
   }

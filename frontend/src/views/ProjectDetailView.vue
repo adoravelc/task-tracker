@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/utils/axios'
+import { getApiErrorMessage } from '@/utils/apiError'
 
 interface TaskCategory {
   id: number
@@ -171,8 +172,8 @@ const fetchProject = async () => {
   try {
     const response = await api.get<{ data: ProjectDetail }>(`/projects/${route.params.id}`)
     project.value = response.data.data
-  } catch {
-    errorMessage.value = 'Failed to load project details.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to load project details.')
   } finally {
     isLoading.value = false
   }
@@ -247,8 +248,8 @@ const submitCreateTask = async () => {
 
     isCreateTaskOpen.value = false
     await fetchProject()
-  } catch {
-    errorMessage.value = 'Failed to create task.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to create task.')
   } finally {
     isSavingTask.value = false
   }
@@ -278,8 +279,8 @@ const submitEditTask = async () => {
 
     isEditTaskOpen.value = false
     await fetchProject()
-  } catch {
-    errorMessage.value = 'Failed to update task.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to update task.')
   } finally {
     isSavingTaskEdit.value = false
   }
@@ -312,8 +313,8 @@ const submitEditProject = async () => {
     }
 
     isEditProjectOpen.value = false
-  } catch {
-    errorMessage.value = 'Failed to update project.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to update project.')
   } finally {
     isSavingProject.value = false
   }
@@ -331,8 +332,8 @@ const deleteTask = async (task: ProjectTask) => {
   try {
     await api.delete(`/tasks/${task.id}`)
     await fetchProject()
-  } catch {
-    errorMessage.value = 'Failed to delete task.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to delete task.')
   } finally {
     deletingTaskId.value = null
   }
@@ -405,8 +406,8 @@ const handleColumnDrop = async (event: DragEvent, categoryName: string) => {
 
     droppedTask.category = targetCategory
     droppedTask.category_id = targetCategory.id
-  } catch {
-    errorMessage.value = 'Failed to move task.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to move task to selected category.')
   } finally {
     handleTaskDragEnd()
   }

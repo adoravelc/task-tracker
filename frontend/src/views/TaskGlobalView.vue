@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import api from '@/utils/axios'
+import { getApiErrorMessage } from '@/utils/apiError'
 
 interface SimpleProject {
   id: number
@@ -98,8 +99,8 @@ const fetchTasks = async () => {
     })
 
     tasks.value = response.data.data
-  } catch {
-    errorMessage.value = 'Failed to load tasks.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to load tasks.')
   } finally {
     isLoading.value = false
   }
@@ -161,8 +162,8 @@ const submitTask = async () => {
     resetForm()
     closeTaskFormModal()
     await fetchTasks()
-  } catch {
-    errorMessage.value = 'Failed to save task.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to save task.')
   } finally {
     isSavingForm.value = false
   }
@@ -193,8 +194,8 @@ const deleteTask = async (task: TaskItem) => {
   try {
     await api.delete(`/tasks/${task.id}`)
     tasks.value = tasks.value.filter((item) => item.id !== task.id)
-  } catch {
-    errorMessage.value = 'Failed to delete task.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to delete task.')
   } finally {
     isDeletingId.value = null
   }
@@ -215,8 +216,8 @@ watch(search, () => {
 onMounted(async () => {
   try {
     await Promise.all([fetchProjects(), fetchCategories()])
-  } catch {
-    errorMessage.value = 'Failed to load task form options.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to load task form options.')
   }
 })
 </script>

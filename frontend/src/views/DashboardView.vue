@@ -2,6 +2,7 @@
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { Chart, ArcElement, Tooltip, Legend, DoughnutController } from 'chart.js'
 import api from '@/utils/axios'
+import { getApiErrorMessage } from '@/utils/apiError'
 
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend)
 
@@ -159,8 +160,8 @@ const fetchStats = async () => {
       ...response.data.data,
       task_category_distribution: response.data.data.task_category_distribution ?? [],
     }
-  } catch {
-    errorMessage.value = 'Failed to load dashboard data.'
+  } catch (error: unknown) {
+    errorMessage.value = getApiErrorMessage(error, 'Unable to load dashboard data.')
   } finally {
     isLoading.value = false
     await nextTick()

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import type { AxiosError } from 'axios'
 import { useAuthStore } from '@/stores/auth'
+import { getApiErrorMessage } from '@/utils/apiError'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -20,10 +20,7 @@ const submitLogin = async () => {
     await authStore.login(email.value, password.value)
     await router.push('/dashboard')
   } catch (error: unknown) {
-    const apiError = error as AxiosError<{ message?: string }>
-    errorMessage.value =
-      apiError.response?.data?.message ||
-      'Email or password is wrong.'
+    errorMessage.value = getApiErrorMessage(error, 'Email or password is wrong.')
   } finally {
     isLoading.value = false
   }
