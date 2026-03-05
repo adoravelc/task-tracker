@@ -9,9 +9,12 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
     {
+        $search = trim((string) $request->query('search', ''));
+
         $projects = Project::query()
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->query('search') . '%');
+            ->withCount('tasks')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
             })
             ->latest()
             ->get();
@@ -51,7 +54,7 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        $project->load('tasks');
+        $project->load('tasks.category');
 
         return response()->json([
             'message' => 'Project retrieved successfully.',

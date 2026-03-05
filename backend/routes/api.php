@@ -6,19 +6,27 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CategoryController;
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-// Project Management
-Route::apiResource('projects', ProjectController::class)->except(['destroy']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 
-// Task Management
-Route::apiResource('tasks', TaskController::class);
+    // Project Management
+    Route::apiResource('projects', ProjectController::class)->except(['destroy']);
 
-// Dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth:sanctum');
+    // Task Management
+    Route::apiResource('tasks', TaskController::class);
+
+    // Category Management
+    Route::get('/categories', [CategoryController::class, 'index']);
+
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard/stats', [DashboardController::class, 'index']);
+});

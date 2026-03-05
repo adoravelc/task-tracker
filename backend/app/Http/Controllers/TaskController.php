@@ -9,9 +9,12 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
+        $search = trim((string) $request->query('search', ''));
+
         $tasks = Task::query()
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where('title', 'like', '%' . $request->query('search') . '%');
+            ->with(['project:id,name', 'category:id,name'])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($search) . '%']);
             })
             ->when($request->filled('project_id'), function ($query) use ($request) {
                 $query->where('project_id', $request->query('project_id'));
@@ -73,6 +76,7 @@ class TaskController extends Controller
         ]);
 
         $task->update($validated);
+        $task->load(['project:id,name', 'category:id,name']);
 
         return response()->json([
             'message' => 'Task updated successfully.',

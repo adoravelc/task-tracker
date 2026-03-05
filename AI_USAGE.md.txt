@@ -38,3 +38,33 @@ this will be the color theme for this whole system
 please create a dashboard with a sidebar that has logout button, for now make it empty, but it will be the landing page after user log in
 
 make the login page with a little bit description on the top, a text logo (TaskTracker). all with the color theme i provided
+
+I need a MainLayout.vue component in Vue 3 with TypeScript and Tailwind CSS (or plain CSS).It should have a fixed sidebar on the left and a main content area on the right using <router-view />.
+2. Sidebar Header: Display the logo "TaskTracker".
+3. Navigation Links: Create a menu list with "Dashboard", "Project", and "Task". Use <router-link> for navigation.
+4. Bottom Sidebar: Display the user profile name "Admin Energeek" and a "Logout" button.Make sure the active menu item has a different background color/highlight to show where the user is currently located.
+
+Create a DashboardView.vue that fetches data from /api/dashboard/stats. Display three cards: Total Active Projects, Unfinished Tasks, and a list of 5 Tasks nearing their due dates. Use Tailwind CSS for a clean look consistent with the TaskTracker mockup.
+
+Create a ProjectView.vue component using Vue 3 Composition API and TypeScript.
+1. Data Fetching: Fetch the list of projects from /api/projects using axios.
+2. UI: Display a table with columns: Nama, Deskripsi, Status, Total Task, and Tanggal Dibuat.
+3. Search: Implement a search bar to filter projects by title/name.
+4. Status Toggle: Instead of a delete button, provide an 'Archive' or 'Activate' button to toggle the project status between 'active' and 'archived'.
+5. Navigation: Add a 'Detail' button for each row that navigates to /projects/:id.
+
+Create a TaskGlobalView.vue component.
+1. Data Fetching: Fetch all tasks from /api/tasks.
+2. Search: Add a search input to filter tasks by their title globally.
+3. UI: Show a table or list containing Task Title, Project Name, Category, and Due Date.
+4. CRUD Actions: Provide 'Edit' and 'Delete' buttons. For 'Delete', ensure it triggers the soft delete logic on the backend.
+
+Create a detailed ProjectDetailView.vue for a specific project ID.
+1. Header: Display project name, description, and status at the top.
+2. Kanban Board: Group tasks into columns based on their categories: TODO, IN PROGRESS, TESTING, DONE, and PENDING.
+3. Task Cards: Each task should be a card inside its category column.
+4. Move Task: (Optional/Bonus) Implement a way to change a task's category by clicking a move button or dragging.
+5. Modals:
+- Create a 'Tambah Task' modal to add a task specifically for this project.
+- Create an 'Edit Project' modal to update the project's information.
+6. Styling: Use Tailwind CSS to make the columns side-by-side on desktop.
